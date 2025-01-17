@@ -25,13 +25,12 @@ export default function SignIn() {
 	useEffect(() => {
 		if (statusAuth.error) {
 			ToastAndroid.show( statusAuth.message?statusAuth.message:"",ToastAndroid.SHORT);
-			setTimeout(() => {
-				setStatusAuth(defaultStatusAuth)
-			}, 4000)
+			setStatusAuth(defaultStatusAuth)
 		}else if(!statusAuth.error && typeof userData.token == "string" && typeof userData.name == "string"){
+			setStatusAuth(defaultStatusAuth)
 			navigation.navigate("Home");
 		}
-	}, [statusAuth,user,password]);
+	}, [statusAuth]);
 
 	useEffect(() => {
 		setValue('user', user);

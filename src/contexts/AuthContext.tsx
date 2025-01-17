@@ -4,8 +4,8 @@ import { authService } from '../api/authService';
 
 
 type AuthContextType = {
-  user: string;
-  password: string;
+  user?: string;
+  password?: string;
   userData: User;
   statusAuth: StatusAuth;
   setStatusAuth: Dispatch<SetStateAction<StatusAuth>>
@@ -30,8 +30,8 @@ export const defaultStatusAuth: StatusAuth = { error: false, message: undefined 
 
 
 export const AuthProvider = ({ children }: any) => {
-  const [user, setUser] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [user, setUser] = useState<string| undefined>(undefined);
+  const [password, setPassword] = useState<string| undefined>(undefined);
   const [userData, setUserData] = useState<User>(defaultUser);
   const [statusAuth, setStatusAuth] = useState<StatusAuth>(defaultStatusAuth);
 
@@ -55,12 +55,12 @@ export const AuthProvider = ({ children }: any) => {
     loadStoredData();
   }, []);
 
-  const login = async (userData: string, password: string) => {
-    await AsyncStorage.setItem('user', userData);
+  const login = async (user: string, password: string) => {
+    await AsyncStorage.setItem('user', user);
     await AsyncStorage.setItem('password', password);
-    setUser(userData);
+    setUser(user);
     setPassword(password);
-    await authService.login(userData, password).then((resp) => {
+    await authService.login(user, password).then((resp) => {
       if (!resp.error && typeof resp.reponse != "string") {
         setUserData(resp.reponse)
         AsyncStorage.setItem('userData', JSON.stringify(resp.reponse));
@@ -77,8 +77,8 @@ export const AuthProvider = ({ children }: any) => {
     await AsyncStorage.removeItem('user');
     await AsyncStorage.removeItem('password');
     await AsyncStorage.removeItem('userData');
-    setUser('');
-    setPassword('');
+    setUser(undefined);
+    setPassword(undefined);
     setStatusAuth(defaultStatusAuth);
     setUserData(defaultUser);
   };

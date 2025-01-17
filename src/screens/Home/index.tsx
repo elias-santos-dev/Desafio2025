@@ -49,7 +49,7 @@ export default function Home() {
 
 	const renderItem = ({ item }: { item: { codigo: string; nome: string } }) => (
 		<ItemFlatList  onPress={() => { navigation.navigate("Model", { item: item, userData: userData }) }}>
-			<TextItem>{item.nome}- {item.codigo}</TextItem>
+			<TextItem>{item.nome}</TextItem>
 			<AntDesign name="rightcircleo" size={20} color="black" />
 		</ItemFlatList>
 	);
